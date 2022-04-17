@@ -38,6 +38,7 @@
 !/EpgTimerSrv/EpgTimerSrv/*.lib
 !EMPTY
 !Makefile
+!.github/**/*
 Debug/
 Release/
 obj/
