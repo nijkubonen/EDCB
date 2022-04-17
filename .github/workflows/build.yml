@@ -6,9 +6,10 @@ jobs:
   build:
     strategy:
       matrix:
-        arch: ["x86", "x64"]	
+        arch: ["Win32", "x64"]	
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - run: devenv Document\\EDCB_ALL.VS2015.sln /rebuild Release|${{ matrix.value }} 
+      - uses: microsoft/setup-msbuild@v1.1
+      - run: msbuild Document\EDCB_ALL.VS2015.sln -t:Rebuild -p:Configuration=Release -p:platform=${{ matrix.value }} 
 
