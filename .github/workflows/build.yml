@@ -6,10 +6,17 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: ["Win32", "x64"]	
+        platform:
+          - value: Win32
+            path: x86
+          - value: x64
+            path: x64
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
       - uses: microsoft/setup-msbuild@v1.1
-      - run: msbuild Document\EDCB_ALL.VS2015.sln -t:Rebuild -p:Configuration=Release -p:platform=${{ matrix.platform }} 
-
+      - run: msbuild Document\EDCB_ALL.VS2015.sln -t:Rebuild -p:Configuration=Release -p:platform=${{ matrix.platform.value }} 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.platform.path }}
+          path: ${{ matrix.platform.path }}/Release/*
