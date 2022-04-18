@@ -17,7 +17,7 @@ jobs:
       - uses: microsoft/setup-msbuild@v1.1
       - run: msbuild Document\EDCB_ALL.VS2015.sln -t:Rebuild -p:Configuration=Release -p:platform=${{ matrix.platform.value }}
       - run: |
-          tag=$(basename "${{ github.ref }}")_$(date +%Y%m%d.%H%M%S)
+          $tag="$(basename "${{ github.ref }}")_$(date +%Y%m%d)"
           echo "tag=$tag" >> $GITHUB_ENV
       - uses: thedoctor0/zip-release@master
         with:
