@@ -15,8 +15,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: microsoft/setup-msbuild@v1.1
-      - run: msbuild Document\EDCB_ALL.VS2015.sln -t:Rebuild -p:Configuration=Release -p:platform=${{ matrix.platform.value }} 
-      - uses: actions/upload-artifact@v2
+      - run: msbuild Document\EDCB_ALL.VS2015.sln -t:Rebuild -p:Configuration=Release -p:platform=${{ matrix.platform.value }}
+      - run: |
+          tag=$(basename "${{ github.ref }}")_$(date +%Y%m%d.%H%M%S)
+          echo "tag=$tag" >> $GITHUB_ENV
+      - uses: thedoctor0/zip-release@master
         with:
-          name: ${{ matrix.platform.path }}
-          path: ${{ matrix.platform.path }}/Release/*
+          path: ${{ matrix.platform.path }}/Release/
+          filename: EDCB-${{ matrix.platform.path }}-${{ env.tag }}.zip
+      - uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.tag }}
+          prerelease: true
+          files: |
+            EDCB-${{ matrix.platform.path }}-${{ env.tag }}.zip
