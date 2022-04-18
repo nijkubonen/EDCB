@@ -21,11 +21,11 @@ jobs:
           echo "tag=$tag" >> $Env:GITHUB_ENV
       - uses: thedoctor0/zip-release@master
         with:
-          path: ${{ matrix.platform.path }}/Release/
+          directory: ${{ matrix.platform.path }}/Release/
           filename: EDCB-${{ matrix.platform.path }}-${{ env.tag }}.zip
+          recursive_exclusions: "*.lib *.exp *.pdb *.map"
       - uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.tag }}
           prerelease: true
-          files: |
-            EDCB-${{ matrix.platform.path }}-${{ env.tag }}.zip
+          files: ${{ matrix.platform.path }}/Release/EDCB-${{ matrix.platform.path }}-${{ env.tag }}.zip
